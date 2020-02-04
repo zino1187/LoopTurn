@@ -13,9 +13,18 @@ class ViewController: UIViewController {
     @IBOutlet weak var imgView: UIImageView!
     var x:CGFloat=0
     var y:CGFloat=200
+    var velX:CGFloat=5
+    var flag:Bool=true
+    var timer:Timer?
     
     @IBAction func btnClick(_ sender: Any) {
-        Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(move), userInfo: nil, repeats: true)
+        if flag {
+            timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(move), userInfo: nil, repeats: true)
+        }else{
+            timer!.invalidate()
+            
+        }
+        flag = !flag
     }
     
     
@@ -26,10 +35,14 @@ class ViewController: UIViewController {
 
     @objc func move(){
         NSLog("move() called..", "")
-        x += 5
-        y += 5
+        x += velX
         
         imgView.frame.origin = CGPoint(x: x, y: y)
+        
+        if x > 300 || x <= 0{
+            velX = velX * -1
+        }
+        
     }
 }
 
